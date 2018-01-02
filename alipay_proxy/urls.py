@@ -4,5 +4,5 @@ from alipay_proxy.views import AlipayProxyView
 
 app_name = 'alipay_proxy'
 urlpatterns = [
-    url(r'^', AlipayProxyView.as_view(), name='alipay_proxy')
+    url(r'^sign', AlipayProxyView.as_view(), name='alipay_proxy')
 ]

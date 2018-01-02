@@ -19,6 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^gateway.do', include('alipay.urls')),
-    # url(r'^', include('alipay_proxy.urls')),
+    url(r'^proxy/', include('alipay_proxy.urls')),
     url(r'^backdoor/', include('backdoor.urls'))
 ]

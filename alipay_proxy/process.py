@@ -1,6 +1,6 @@
 # --*-- coding: utf-8 --*--
+import copy
 from threading import Thread
-import urlparse
 
 from alipay.models import AlipayUser
 from alipay_proxy import notify
@@ -9,9 +9,7 @@ from alipay_proxy.models import DutCustomerAgreementSign
 
 
 def alipay_dut_customer_agreement_page_sign(context):
-    pr = urlparse.urlparse(context['url'])
-    context_ = dict(urlparse.parse_qsl(pr.query))
-    context_.update(context)
+    context_ = context.copy()
     # add a new Alipay user and a partner if necessary
     last_user = AlipayUser.objects.last()
     user_id = last_user and last_user.pk + 1 or 2088000000000000

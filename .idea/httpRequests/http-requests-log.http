@@ -1,0 +1,66 @@
+GET http://10.5.50.57:8000/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+<> 2018-01-02T074157.200.json
+
+###
+
+POST http://10.5.50.57:8000/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+{"user_id":2088801473085644,"pay_result":1}
+
+<> 2018-01-02T073301.400.json
+
+###
+
+POST http://10.5.50.57:8000/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+{"user_id":2088801473085644,"pay_result":1}
+
+<> 2018-01-02T073300.400.json
+
+###
+
+PUT http://10.5.50.57:8000/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+{"user_id":2088801473085644,"pay_result":1}
+
+<> 2018-01-02T073238.200.json
+
+###
+
+GET http://10.5.50.57:8000/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+<> 2018-01-02T073141.200.json
+
+###
+
+GET http://10.5.50.57:8000/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+<> 2018-01-02T073059.404.html
+
+###
+
+GET http://localhost:8000/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://localhost:8080/backdoor/alipayuser/2088801473085644
+Accept: */*
+Cache-Control: no-cache
+
+###
+

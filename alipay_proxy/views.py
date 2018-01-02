@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import json
+from urlparse import parse_qsl, urlparse
 
 from django.views.generic import TemplateView
 
@@ -14,16 +15,23 @@ class AlipayProxyView(JsonResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context_ = super(AlipayProxyView, self).get_context_data(**kwargs)
         context_.pop('view')  # view object should not be included in json response
+        data = {}
         if self.request.method.upper() == 'GET':
-            context_.update(self.request.GET.dict())
+            data.update(self.request.GET.dict())
         elif self.request.method.upper() == 'POST':
-            context_.update(self.request.POST.dict())
+            data.update(self.request.POST.dict())
         # in case content type is not "x-www-form-urlencoded"
-        if not context_:
+        if not data:
             try:
-                context_.update(json.loads(self.request.body))
+                data.update(json.loads(self.request.body))
             except ValueError:
                 pass
+        if 'scheme' in data:
+            scheme = data['scheme']
+        url = dict(parse_qsl(scheme)).get('url')
+        if url:
+            query = urlparse(url).query
+            context_.update(dict(parse_qsl(query)))
         client_method = service2method(context_.get('service', ''))
 
         if hasattr(process, client_method):
