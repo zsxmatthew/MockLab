@@ -20,13 +20,13 @@ def alipayuser_detail(request, user_id):
         serializer = AlipayUserSerializer(user)
         return Response(serializer.data)
     elif request.method == 'POST':  # create
-        serializer = AlipayUserSerializer(data=request.data)
+        serializer = AlipayUserSerializer(data={'user_id': user_id}.update(request.data))
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
     elif request.method == 'PUT':  # update
-        serializer = AlipayUserSerializer(user, data=request.data)
+        serializer = AlipayUserSerializer(user, data={'user_id': user_id}.update(request.data))
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
