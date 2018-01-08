@@ -74,7 +74,7 @@ def alipay_acquire_createandpay(**kwargs):
     if 'seller_id' in kwargs:
         AlipayUser.objects.get_or_create(user_id=kwargs['seller_id'])  # not really necessary
     context = {
-        'is_success': conf.is_success_options[buyer.pay_result] if buyer else conf.is_success,
+        'is_success': conf.is_success_options[buyer.is_success] if buyer else conf.is_success,
         'subject': subject,
         'sign_type': conf.sign_type,
         'notify_url': kwargs.get('notify_url') or conf.notify_url,
