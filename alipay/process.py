@@ -68,10 +68,13 @@ def alipay_acquire_createandpay(**kwargs):
     service = kwargs['service']
     _input_charset = kwargs.get('_input_charset')
     subject = kwargs.get('subject')
-    buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs['buyer_id'])
-    AlipayUser.objects.get_or_create(user_id=kwargs['seller_id'])  # not really necessary
+    buyer = None
+    if 'buyer_id' in kwargs:
+        buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs['buyer_id'])
+    if 'seller_id' in kwargs:
+        AlipayUser.objects.get_or_create(user_id=kwargs['seller_id'])  # not really necessary
     context = {
-        'is_success': conf.is_success_options[buyer.pay_result],
+        'is_success': conf.is_success_options[buyer.pay_result] if buyer else conf.is_success,
         'subject': subject,
         'sign_type': conf.sign_type,
         'notify_url': kwargs.get('notify_url') or conf.notify_url,
@@ -125,7 +128,7 @@ def alipay_acquire_createandpay(**kwargs):
     # })
 
     # extract custom options
-    options = json.loads(buyer.other_options)
+    options = json.loads(buyer.other_options) if buyer else {}
     if context['is_success'] == 'T':
         context.update(get_optional(options, 'detail_error_code'))
         context.update(get_optional(options, 'detail_error_des'))
