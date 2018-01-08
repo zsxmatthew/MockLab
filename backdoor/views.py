@@ -12,6 +12,8 @@ from backdoor.serializers import AlipayUserSerializer
 @api_view(['GET', 'POST', 'PUT'])
 def alipayuser_detail(request, user_id):
     print 'alipayuser_detail'.center(40, '-')
+    data = {'user_id': user_id}
+    data.update(request.data.dict())
     try:
         user = AlipayUser.objects.get(user_id=user_id)
     except AlipayUser.DoesNotExist:
@@ -20,13 +22,13 @@ def alipayuser_detail(request, user_id):
         serializer = AlipayUserSerializer(user)
         return Response(serializer.data)
     elif request.method == 'POST':  # create
-        serializer = AlipayUserSerializer(data={'user_id': user_id}.update(request.data))
+        serializer = AlipayUserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
     elif request.method == 'PUT':  # update
-        serializer = AlipayUserSerializer(user, data={'user_id': user_id}.update(request.data))
+        serializer = AlipayUserSerializer(user, data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
