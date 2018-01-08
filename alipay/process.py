@@ -1,21 +1,15 @@
 # --*-- coding: utf-8 --*--
-import base64
-import hashlib
 import json
 import math
-import os
 import random
 import string
 import urllib
 
 import requests
-from Crypto.Hash import SHA
-from Crypto.PublicKey import RSA, DSA
-from Crypto.Signature import PKCS1_v1_5 as Signature_pkcs1_v1_5
 from django.utils import timezone
 
 from alipay import schema, conf, notify
-from alipay.models import AlipayContext
+from alipay.models import AlipayContext, AlipayUser
 from utils.helpers import get_optional, service2method
 
 
@@ -74,8 +68,10 @@ def alipay_acquire_createandpay(**kwargs):
     service = kwargs['service']
     _input_charset = kwargs.get('_input_charset')
     subject = kwargs.get('subject')
+    buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs['buyer_id'])
+    AlipayUser.objects.get_or_create(user_id=kwargs['seller_id'])  # not really necessary
     context = {
-        'is_success': 'T',
+        'is_success': conf.is_success_options[buyer.pay_result],
         'subject': subject,
         'sign_type': conf.sign_type,
         'notify_url': kwargs.get('notify_url') or conf.notify_url,
@@ -127,28 +123,38 @@ def alipay_acquire_createandpay(**kwargs):
     #         ['error', 'sign', 'sign_type', 'is_success']
     #     )
     # })
-    if kwargs.get('is_success') == 'T':
-        context['is_success'] = 'T'
-        context.update(get_optional(kwargs, 'detail_error_code'))
-        context.update(get_optional(kwargs, 'detail_error_des'))
+
+    # extract custom options
+    options = json.loads(buyer.other_options)
+    if context['is_success'] == 'T':
+        context.update(get_optional(options, 'detail_error_code'))
+        context.update(get_optional(options, 'detail_error_des'))
         context.update(
-            get_optional(kwargs, 'result_code') or {'result_code': 'ORDER_SUCCESS_PAY_SUCCESS'})
-        context.update(get_optional(kwargs, 'extend_info'))
-        context.update(get_optional(kwargs, 'fund_bill_list'))
-    if kwargs.get('is_success') == 'F' and kwargs.get('error'):
+            get_optional(options, 'result_code')
+            or {'result_code': 'ORDER_SUCCESS_PAY_SUCCESS'})
+        context.update(get_optional(options, 'extend_info'))
+        context.update(get_optional(options, 'fund_bill_list'))
+    if context['is_success'] == 'F' and options.get('error'):
         context['is_success'] = 'F'
-        context['error'] = kwargs.get('error')
+        context['error'] = options.get('error')
+
     # callback parameters
     context.update(get_optional(kwargs, 'notify_action_type'))
     context.update(get_optional(kwargs, 'trade_status'))
     context.update(get_optional(kwargs, 'refund_fee'))
     context.update(get_optional(kwargs, 'out_biz_no'))
     context.update(get_optional(kwargs, 'paytools_pay_amount'))
+
+    # assemble all parts of context
     _context = {
         'schema': get_schema(service),
         'context': context
     }
+
+    # put complete context into context
     AlipayContext.objects.filter(out_trade_no=kwargs['out_trade_no']).update(context=json.dumps(_context))
+
+    # asynchronous notification
     client_method = service2method(kwargs['service'])
     if hasattr(notify, client_method):
         getattr(notify, client_method)(context)
@@ -174,63 +180,6 @@ def alipay_acquire_query(**kwargs):
     context_['schema'] = get_schema(kwargs['service'])
     context_['context'].update(context)
     return context_
-
-
-def sign(data, encoding=None, sign_type=conf.sign_type, key_specs=[], exception_keys=['sign', 'sign_type']):
-    req_keys = sorted([key for key in key_specs if key not in exception_keys])
-    params = [(k, data[k]) for k in req_keys if k in data]
-    query_string = '&'.join(['{}={}'.format(k, v) for (k, v) in params])
-    query_string = query_string.encode(encoding) if isinstance(query_string, unicode) and encoding else query_string
-    print 'signing_params'.center(40, '-')
-    for k in req_keys:
-        if k in data:
-            print k, ':', data.get(k)
-    print 'signing_string'.center(40, '-')
-    print type(query_string), query_string
-    return calc_sign(query_string, sign_type)
-
-
-def calc_sign(query_string, sign_type=conf.sign_type):
-    if sign_type.upper() == 'MD5':
-        m = hashlib.md5()
-        m.update(''.join([query_string, conf.md5_secret]))
-        return m.hexdigest()
-    if sign_type.upper() == 'RSA':
-        with open(os.path.join(conf.crypto_root, 'r')) as f:
-            key = f.read()
-            rsa_key = RSA.importKey(key)
-            signer = Signature_pkcs1_v1_5.new(rsa_key)
-            digest = SHA.new()
-            digest.update(query_string)
-            signed = signer.sign(digest)
-        return base64.b64encode(signed)
-    if sign_type.upper() == 'DSA':
-        key = import_dsa_key_from_file(os.path.join(conf.crypto_root, ''))
-        h = SHA.new(query_string).digest()
-        k = random.StrongRandom().randint(1, )
-        signed = key.sign(h, k)
-        return base64.b64encode(signed)
-
-
-def import_dsa_key_from_file(file_name, encoding='base64'):
-    from Crypto.Util import asn1
-    with open(file_name) as f:
-        seq = asn1.DerSequence()
-        data = '\n'.join(f.read().strip().split('\n')[1:-1].decode(encoding))
-        seq.decode(data)
-        p, q, g, y, x = seq[1:]
-        key = DSA.construct((y, g, p, q, x))
-        return key
-
-
-def export_dsa_key_to_file(file_name, key, encoding='base64'):
-    from Crypto.Util import asn1
-    with open(file_name) as f:
-        seq = asn1.DerSequence()
-        seq[:] = [0, key.p, key.q, key.g, key.y, key.x]
-        template = '-----BEGIN DSA PRIVATE KEY-----\n%s-----END DSA PRIVATE KEY-----'
-        exported_key = template % seq.encode().encode(encoding)
-        f.write(exported_key)
 
 
 def get_schema(service):

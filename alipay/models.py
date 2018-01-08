@@ -6,7 +6,8 @@ from django.db import models
 
 class AlipayUser(models.Model):
     user_id = models.BigIntegerField(primary_key=True)
-    pay_result = models.IntegerField(default=0)  # 0 means T
+    is_success = models.IntegerField(default=0)  # 0 means T
+    other_options = models.TextField(blank=True, null=True)  # json
 
 
 class AlipayContext(models.Model):
