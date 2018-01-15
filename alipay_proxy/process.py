@@ -18,7 +18,8 @@ def alipay_dut_customer_agreement_page_sign(context):
     # add a new Agreement Sign entry
     agreement = DutCustomerAgreementSign.objects.create(alipay_user_id=user_id,
                                                         partner_id=context_['partner'],
-                                                        product_code=context_['product_code'])
+                                                        product_code=context_['product_code'],
+                                                        external_sign_no=context_.get('external_sign_no', None))
     sign_time = agreement.sign_time
     # generate agreement_no
     fmt = "%Y%m%d%H%M%S"

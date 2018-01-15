@@ -20,3 +20,5 @@ class DutCustomerAgreementSign(models.Model):
                                        ('NORMAL', 'NORMAL'),
                                        ('STOP', 'STOP')),
                               default='NORMAL', max_length=6)
+    external_sign_no = models.UUIDField(blank=True, null=True)
+    agreement_detail = models.TextField(blank=True, null=True)

@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'alipay.apps.AlipayConfig',
     'alipay_proxy.apps.AlipayProxyConfig',
-    'backdoor.apps.BackdoorConfig'
+    'backdoor.apps.BackdoorConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,12 @@ TEMPLATES = [
             'environment': 'MockLab.jinja2.environment',
             'extensions': ['jinja2.ext.i18n', 'jinja2.ext.autoescape']}
     },
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {}
+    }
 ]
 
 WSGI_APPLICATION = 'MockLab.wsgi.application'
@@ -119,4 +126,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ALLOWED_HOSTS = ['10.103.50.33', '10.5.50.57']
+ALLOWED_HOSTS = ['10.103.50.33', '10.5.50.57', u'mapi.alipay.com', u'd.alipay.com']

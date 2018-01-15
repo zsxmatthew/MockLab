@@ -6,6 +6,7 @@ from django.db import models
 
 class AlipayUser(models.Model):
     user_id = models.BigIntegerField(primary_key=True)
+    logon_id = models.TextField(blank=True, null=True)  # mobile or email
     is_success = models.IntegerField(default=0)  # 0 means T
     other_options = models.TextField(blank=True, null=True)  # json
 

@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from alipay import schema, conf, notify
 from alipay.models import AlipayContext, AlipayUser
+from alipay_proxy.models import DutCustomerAgreementSign
 from utils.helpers import get_optional, service2method
 
 
@@ -180,8 +181,69 @@ def alipay_acquire_query(**kwargs):
                 context[t[0]] = context_['context'].get(t[0])
     context['sign'] = ""  # TODO, client doesn't verify this
 
-    context_['schema'] = get_schema(kwargs['service'])
-    context_['context'].update(context)
+    context_ = {
+        'schema': get_schema(kwargs['service']),
+        'context': context
+    }
+    return context_
+
+
+def alipay_dut_customer_agreement_query(**kwargs):
+    user = None
+    try:
+        if 'alipay_user_id' in kwargs:
+            agreements = DutCustomerAgreementSign.objects.filter(partner_id=kwargs['partner'],
+                                                                 alipay_user_id=kwargs['alipay_user_id'])
+        else:
+            agreements = DutCustomerAgreementSign.objects.filter(partner_id=kwargs['partner'],
+                                                                 alipay_user__logon_id=kwargs['alipay_logon_id'])
+        if 'external_sign_no' in kwargs:
+            agreement = agreements.get(external_sign_no=kwargs['external_sign_no'])
+        else:
+            agreement = agreements.first()
+        status = agreement.status
+        valid_time = agreement.valid_time.strftime('%Y-%m-%d %H:%M:%')
+        invalid_time = agreement.invalid_time.strftime('%Y-%m-%d %H:%M:%')
+        sign_time = agreement.sign_time.strftime('%Y-%m-%d %H:%M:%')
+        sign_modify_time = agreement.sign_modify_time('%Y-%m-%d %H:%M:%S')
+        external_sign_no = agreement.external_sign_no or None
+        agreement_detail = agreement.agreement_detail or None
+    except DutCustomerAgreementSign.DoesNotExist:
+        status = 'STOP'
+        valid_time = '1970-01-01 00:00:01'
+        invalid_time = '1970-01-01 00:00:01'
+        sign_time = '1970-01-01 00:00:01'
+        sign_modify_time = '1970-01-01 00:00:01'
+        external_sign_no = None
+        agreement_detail = None
+    if 'alipay_user_id' in kwargs:
+        user = AlipayUser.objects.get(user_id=kwargs['alipay_user_id'])
+    context = {
+        'is_success': conf.is_success_options[user.is_success] if user else conf.is_success,
+        'sign_type': 'MD5',  # optional
+        'sign': '',  # TODO, fake and optional
+        'pricipal_type': 'CARD' if 'alipay_user_id' in kwargs else 'CUSTOMER',
+        'principal_id': kwargs.get('alipay_user_id') or kwargs.get('alipay_logon_id'),
+        'product_code': kwargs['product_code'],
+        'scene': kwargs['scene'] or 'DEFAULT|DEFAULT',
+        'thirdpart_type': 'PARTNER',
+        'thirdpart_id': 'PARTNER_TAOBAO_ORDER',
+        'status': status,
+        'valid_time': valid_time,
+        'invalid_time': invalid_time,
+        'sign_time': sign_time,
+        'sign_modify_time': sign_modify_time
+    }
+    if external_sign_no:  # optional
+        context['external_sign_no'] = external_sign_no
+    if agreement_detail:  # optional
+        context['agreement_detail'] = agreement_detail
+    if context['is_success'] == 'F':  # error should not be available if query succeeds
+        context.update(get_optional(kwargs, 'error'))
+    context_ = {
+        'schema': get_schema(kwargs['service']),
+        'context': context
+    }
     return context_
 
 

@@ -105,6 +105,19 @@ REQ_SCHEMA = {
         ('agreement_detail', 'json', (), True, u'协议细则'),
         ('prod_properties', 'json', (), True, u'签约产品属性'),
         ('external_user_id', 'string', (), True, u'商户网站用户标识')
+    ),
+    'alipay.dut.customer.agreement.query': (
+        ('service', 'string', (), False, u'接口名称'),
+        ('partner', 'string', (16,), False, u'合作者身份ID'),  # r'2088\d{14}'
+        ('sign_type', 'string', (), False, u'签名方式'),  # DSA/RSA/MD5
+        ('sign', 'string', (), False, u'签名'),
+        ('_input_charset', 'string', (), True, u'参数编码字符集'),
+        ('product_code', 'string', (64,), False, u'产品代码'),
+        ('alipay_user_id', 'string', (), True, u'用户支付宝用户号'),
+        ('alipay_logon_id', 'string', (100,), True, u'用户支付宝账号'),
+        ('scene', 'string', (100,), True, u'场景'),
+        ('app_id', 'string', (), True, u'商户接入公众平台时对应的appid'),
+        ('external_sign_no', 'string', (32,), True, u'商户签约号')
     )
 }
 
@@ -179,6 +192,25 @@ RESP_SCHEMA = {
         ('invalid_time', 'date', (), False, (2,), u'协议失效时间'),  # yyyy-MM-dd HH:mm:ss
         ('alipay_user_id', 'string', (16), False, (2,), u'支付宝用户号'),  # r'2088\d{12}'
         ('external_sign_no', 'string', (), True, (0,), u'商户签约号')
+    ),
+    'alipay.dut.customer.agreement.query': (
+        ('is_success', 'string', (), False, (2,), u'是否成功'),  # T/F
+        ('sign_type', 'string', (), True, (1,), u'签名方式'),  # DSA/RSA/MD5
+        ('sign', 'sring', (), True, (2,), u'签名'),
+        ('error', 'string', (), True, (2,), u'错误代码'),
+        ('pricipal_type', 'string', (), False, (1,), u'签约主体类型'),  # CARD/CUSTOMER
+        ('principal_id', 'stirng', (), False, (2,), u'签约主体标识'),
+        ('product_code', 'string',(), False, (0,), u'签约产品码'),
+        ('scene', 'string', (), False, (0, 'DEFAULT|DEFAULT'), u'签约产品场景'),
+        ('thirdpart_type', 'string', (), False, (5, 'PARTNER'), u'三方协议第三方主体类型'),
+        ('thirdpart_id', 'string', (), False, (5, 'PARTNER_TAOBAO_ORDER'), u'三方协议第三方主体'),
+        ('status', 'string', (), False, (3,), u'协议状态'),
+        ('valid_time', 'date', (), False, (3,), u'生效时间'),  # yyyy-MM-dd HH:MM:SS
+        ('invalid_time', 'date', (), False, (3,), u'失效时间'),  # yyyy-MM-dd HH:MM:SS
+        ('sign_time', 'date', (), False, (3,), u'签约时间'),  # yyyy-MM-dd HH:MM:SS
+        ('sign_modify_time', 'date', (), False, (3,), u'签约修改时间'),  # yyyy-MM-dd HH:MM:SS
+        ('external_sign_no', 'string', (), True, (3,), u'商户签约号'),
+        ('agreement_detail', 'string', (), True, (3,), u'协议细则')
     )
 }
 
