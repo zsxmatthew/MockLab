@@ -67,8 +67,6 @@ def alipay_acquire_createandpay(**kwargs):
     now = timezone.now()
     trade_no = gen_trade_no(**kwargs)
     service = kwargs['service']
-    _input_charset = kwargs.get('_input_charset')
-    subject = kwargs.get('subject')
     buyer = None
     if 'buyer_id' in kwargs:
         buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs['buyer_id'])
@@ -76,47 +74,14 @@ def alipay_acquire_createandpay(**kwargs):
         AlipayUser.objects.get_or_create(user_id=kwargs['seller_id'])  # not really necessary
     context = {
         'is_success': conf.is_success_options[buyer.is_success] if buyer else conf.is_success,
-        'subject': subject,
         'sign_type': conf.sign_type,
-        'notify_url': kwargs.get('notify_url') or conf.notify_url,
         'trade_no': trade_no,
         'out_trade_no': kwargs.get('out_trade_no'),
-        'result_code': 'ORDER_SUCCESS_PAY_SUCCESS',
         'total_fee': kwargs.get('total_fee'),
-        'partner': kwargs.get('partner'),
-        'gmt_payment': now.strftime('%Y-%m-%d %H:%M:%S'),
-        '_input_charset': _input_charset,
-        'product_code': kwargs.get('product_code'),
-        'service': kwargs.get('service')
+        'gmt_payment': now.strftime('%Y-%m-%d %H:%M:%S')
     }
-    context.update(get_optional(kwargs, 'buyer_id'))
     context.update(get_optional(kwargs, 'buyer_id', 'buyer_user_id'))
-    context.update(get_optional(kwargs, 'buyer_email'))
     context.update(get_optional(kwargs, 'buyer_email', 'buyer_logon_id'))
-    context.update(get_optional(kwargs, 'seller_id'))
-    context.update(get_optional(kwargs, 'body'))
-    context.update(get_optional(kwargs, 'operator_id'))
-    context.update(get_optional(kwargs, 'royalty_parameters'))
-    context.update(get_optional(kwargs, 'royalty_type'))
-    context.update(get_optional(kwargs, 'quantity'))
-    context.update(get_optional(kwargs, 'dynamic_id_type'))
-    context.update(get_optional(kwargs, 'alipay_ca_request'))
-    context.update(get_optional(kwargs, 'price'))
-    context.update(get_optional(kwargs, 'it_b_pay'))
-    context.update(get_optional(kwargs, 'seller_email'))
-    context.update(get_optional(kwargs, 'buyer_email'))
-    context.update(get_optional(kwargs, 'operator_type'))
-    context.update(get_optional(kwargs, 'show_url'))
-    context.update(get_optional(kwargs, 'currency'))
-    context.update(get_optional(kwargs, 'goods_detail'))
-    context.update(get_optional(kwargs, 'extend_params'))
-    context.update(get_optional(kwargs, 'channel_parameters'))
-    context.update(get_optional(kwargs, 'ref_ids'))
-    context.update(get_optional(kwargs, 'mcard_parameters'))
-    context.update(get_optional(kwargs, 'auth_no'))
-    context.update(get_optional(kwargs, 'promo_params'))
-    context.update(get_optional(kwargs, 'passback_parameters'))
-    context.update(get_optional(kwargs, 'agreement_info'))
     context['sign'] = ''  # fake one
     # context.update({
     #     'sign': sign(
@@ -142,17 +107,17 @@ def alipay_acquire_createandpay(**kwargs):
         context['is_success'] = 'F'
         context['error'] = options.get('error')
 
-    # callback parameters
-    context.update(get_optional(kwargs, 'notify_action_type'))
-    context.update(get_optional(kwargs, 'trade_status'))
-    context.update(get_optional(kwargs, 'refund_fee'))
-    context.update(get_optional(kwargs, 'out_biz_no'))
-    context.update(get_optional(kwargs, 'paytools_pay_amount'))
+    # callback parameters including all fields from request and response
+    callback = {}
+    callback.update(kwargs)
+    callback.update(context)
 
     # assemble all parts of context
     _context = {
+        'request_': kwargs,  # using 'request' here would shadow another argument in deeper methods
         'schema': get_schema(service),
-        'context': context
+        'response': context,
+        'callback': callback
     }
 
     # put complete context into context
@@ -182,8 +147,9 @@ def alipay_acquire_query(**kwargs):
     context['sign'] = ""  # TODO, client doesn't verify this
 
     context_ = {
+        'request_': kwargs,
         'schema': get_schema(kwargs['service']),
-        'context': context
+        'response': context
     }
     return context_
 
@@ -217,9 +183,12 @@ def alipay_dut_customer_agreement_query(**kwargs):
         external_sign_no = None
         agreement_detail = None
     if 'alipay_user_id' in kwargs:
-        user = AlipayUser.objects.get(user_id=kwargs['alipay_user_id'])
+        try:
+            user = AlipayUser.objects.get(user_id=kwargs['alipay_user_id'])
+        except AlipayUser.DoesNotExist:
+            user = None
     context = {
-        'is_success': conf.is_success_options[user.is_success] if user else conf.is_success,
+        'is_success': conf.is_success_options[user.is_success] if user else 'F',
         'sign_type': 'MD5',  # optional
         'sign': '',  # TODO, fake and optional
         'pricipal_type': 'CARD' if 'alipay_user_id' in kwargs else 'CUSTOMER',
@@ -241,8 +210,9 @@ def alipay_dut_customer_agreement_query(**kwargs):
     if context['is_success'] == 'F':  # error should not be available if query succeeds
         context.update(get_optional(kwargs, 'error'))
     context_ = {
+        'request_': kwargs,
         'schema': get_schema(kwargs['service']),
-        'context': context
+        'response': context
     }
     return context_
 

@@ -25,9 +25,6 @@ SECRET_KEY = 'ow3+s-k-09nf+h8gf@e%kuuufmi!9!+d!i+vt&vswa^wua0g92'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,7 +37,8 @@ INSTALLED_APPS = [
     'alipay.apps.AlipayConfig',
     'alipay_proxy.apps.AlipayProxyConfig',
     'backdoor.apps.BackdoorConfig',
-    'rest_framework'
+    'rest_framework',
+    'sslserver'
 ]
 
 MIDDLEWARE = [
