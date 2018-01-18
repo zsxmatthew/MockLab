@@ -57,7 +57,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [
-            os.path.join(BASE_DIR, 'alipay', 'templates'),
+            os.path.join(BASE_DIR, 'alipay', 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -124,4 +124,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ALLOWED_HOSTS = ['10.103.50.33', '10.5.50.57', u'mapi.alipay.com', u'd.alipay.com']
+ALLOWED_HOSTS = ['10.103.50.33', '10.5.50.57',
+                 u'mapi.alipay.com', u'd.alipay.com', u'openapi.alipay.com']

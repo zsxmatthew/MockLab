@@ -118,6 +118,37 @@ REQ_SCHEMA = {
         ('scene', 'string', (100,), True, u'场景'),
         ('app_id', 'string', (), True, u'商户接入公众平台时对应的appid'),
         ('external_sign_no', 'string', (32,), True, u'商户签约号')
+    ),
+    'alipay.trade.pay': (
+        # public
+        ('app_id', 'string', (32,), False, u'支付宝分配给开发者的应用ID'),
+        ('method', 'string', (128,), False, u'接口名称'),
+        ('format', 'string', (40,), True, u'仅支持JSON'),
+        ('charset', 'string', (10,), False, u'请求使用的编码格式'),  # utf-8/gbk/gb2312
+        ('sign_type', 'string', (10,), False, u'商户生成签名字符串所用的签名算法类型'),  # RSA2/RSA
+        ('sign', 'string', (344,), False, u'商户请求参数的签名串'),
+        ('timestamp', 'string', (19,), False, u'发送请求的时间'),  # yyyy-MM-dd HH:MM:SS
+        ('version', 'string', (3,), False, u'调用的接口版本'),  # 1.0
+        ('notify_url', 'string', (256,), True, u'支付宝服务器主动通知商户服务器里指定的页面'),
+        ('app_auth_token', 'string', (40,), True, u'应用授权'),
+        ('biz_content', 'string', (), False, u'请求参数的集合'),
+        # request
+        ('out_trade_no', 'string', (64,), False, u'商户订单号'),
+        ('scene', 'string', (32,), False, u'支付场景'),
+        ('auth_code', 'string', (32,), False, u'支付授权码'),
+        ('product_code', 'string', (32,), True, u'销售产品码'),
+        ('subject', 'string', (256,), False, u'订单标题'),
+        ('buyer_id', 'string', (28,), True, u'买家的支付宝用户ID'),
+        ('seller_id', 'string', (28,), True, u'商户签约账号对应的支付宝用户ID'),
+        ('total_amount', 'number', (9, 2), True, u'订单总金额'),
+        ('discountable_amount', 'number', (9, 2), True, u'参与优惠计算的金额'),
+        ('body', 'string', (128,), True, u'订单描述'),
+        ('goods_detail', 'json', (), True, u'订单包含的商品列表信息'),
+        ('operator_id', 'string', (28,), True, u'商户操作员编号'),
+        ('store_id', 'string', (32,), True, u'商户门店编号'),
+        ('terminal_id', 'string', (32,), True, u'商户机具终端编号'),
+        ('extend_params', 'json', (), True, u'业务扩展参数'),
+        ('timeout_express', 'string', (6,), True, u'该笔订单允许的最晚付款时间')
     )
 }
 
@@ -211,6 +242,32 @@ RESP_SCHEMA = {
         ('sign_modify_time', 'date', (), False, (3,), u'签约修改时间'),  # yyyy-MM-dd HH:MM:SS
         ('external_sign_no', 'string', (), True, (3,), u'商户签约号'),
         ('agreement_detail', 'string', (), True, (3,), u'协议细则')
+    ),
+    'alipay.trade.pay': (
+        # public
+        ('code', 'string', (), False, (2,), u'网关返回码'),
+        ('msg', 'string', (), False, (2,), u'网关返回码描述'),
+        ('sub_code', 'string', (), True, (2,), u'业务返回码'),
+        ('sub_msg', 'string', (), True, (2,), u'业务返回码描述'),
+        ('sign', 'string', (), False, (2,), u'签名'),
+        # response
+        ('trade_no', 'string', (64,), False, u'支付宝交易号'),
+        ('out_trade_no', 'string', (64,), False, u'商户订单号'),
+        ('buyer_logon_id', 'string', (100,), False, u'买家支付宝账号'),
+        ('total_amount', 'number', (9, 2), False, u'交易金额'),
+        ('receipt_amount', 'string', (9, 2), False, u'实收金额'),
+        ('buyer_pay_amount', 'number', (9, 2), True, u'买家付款的金额'),
+        ('point_amount', 'number', (9, 2), True, u'使用积分宝付款的金额'),
+        ('invoice_amount', 'number', (9, 2), True, u'交易中可给用户开具发票的金额'),
+        ('gmt_payment', 'date', (32,), False, u'交易支付时间'),
+        ('fund_bill_list', 'json', (), False, u'交易支付使用的资金渠道'),
+        ('card_balance', 'number', (9, 2), True, u'支付宝卡余额'),
+        ('store_name', 'string', (512,), True, u'发生支付交易的商户门店名称'),
+        ('buyer_user_id', 'string', (28,), False, u'买家在支付宝的用户id'),
+        ('discount_goods_detail', 'string', (1024,), True, u'本次交易支付所使用的单品券优惠的商品优惠信息'),
+        ('voucher_detail_list', 'json', (), True, u'本交易支付时使用的所有优惠券信息'),
+        ('business_params', 'string', (512,), True, u'商户传入业务信息'),
+        ('buyer_user_type', 'string', (18,), True, u'买家用户类型')
     )
 }
 
@@ -370,6 +427,109 @@ VOCABULARY = {
         )
     },
     'alipay.wap.create.direct.pay.by.user': {
-
+    },
+    'alipay.trade.pay': {
+        'sub_code': {
+            # sub_code: (sub_msg, code)
+            'ACQ.SYSTEM_ERROR': (u'接口返回错误', '40004'),
+            'ACQ.INVALID_PARAMETER': (u'参数无效', '40004'),
+            'ACQ.ACCESS_FORBIDDEN': (u'无权限使用接口', '40004'),
+            'ACQ.EXIST_FORBIDDEN_WORD': (u'订单信息中包含违禁词', '40004'),
+            'ACQ.PARTNER_ERROR': (u'应用APP_ID填写错误', '40004'),
+            'ACQ.TOTAL_FEE_EXCEED': (u'订单总金额超过限额', '40004'),
+            'ACQ.PAYMENT_AUTH_CODE_INVALID': (u'支付授权码无效', '40004'),
+            'ACQ.CONTEXT_INCONSISTENT': (u'交易信息被篡改', '40004'),
+            'ACQ.TRADE_HAS_SUCCESS': (u'交易已被支付', '40004'),
+            'ACQ.TRADE_HAS_CLOSE': (u'交易已经关闭', '40004'),
+            'ACQ.BUYER_BALANCE_NOT_ENOUGH': (u'买家余额不足', '40004'),
+            'ACQ.BUYER_BANKCARD_BALANCE_NOT_ENOUGH': (u'用户银行卡余额不足', '40004'),
+            'ACQ.ERROR_BALANCE_PAYMENT_DISABLE': (u'余额支付功能关闭', '40004'),
+            'ACQ.BUYER_SELLER_EQUAL': (u'买卖家不能相同', '40004'),
+            'ACQ.TRADE_BUYER_NOT_MATCH': (u'交易买家不匹配', '40004'),
+            'ACQ.BUYER_ENABLE_STATUS_FORBID': (u'买家状态非法', '40004'),
+            'ACQ.PULL_MOBILE_CASHIER_FAIL': (u'唤起移动收银台失败', '40004'),
+            'ACQ.MOBILE_PAYMENT_SWITCH_OFF': (u'用户的无线支付开关关闭', '40004'),
+            'ACQ.PAYMENT_FAIL': (u'支付失败', '40004'),
+            'ACQ.BUYER_PAYMENT_AMOUNT_DAY_LIMIT_ERROR': (u'买家付款日限额超限', '40004'),
+            'ACQ.BEYOND_PAY_RESTRICTION': (u'商户收款额度超限', '40004'),
+            'ACQ.BEYOND_PER_RECEIPT_RESTRICTION': (u'商户收款金额超过月限额', '40004'),
+            'ACQ.BUYER_PAYMENT_AMOUNT_MONTH_LIMIT_ERROR': (u'买家付款月额度超限', '40004'),
+            'ACQ.SELLER_BEEN_BLOCKED': (u'商家账号被冻结', '40004'),
+            'ACQ.ERROR_BUYER_CERTIFY_LEVEL_LIMIT': (u'买家未通过人行认证', '40004'),
+            'ACQ.PAYMENT_REQUEST_HAS_RISK': (u'支付有风险', '40004'),
+            'ACQ.NO_PAYMENT_INSTRUMENTS_AVAILABLE': (u'没用可用的支付工具', '40004'),
+            'ACQ.USER_FACE_PAYMENT_SWITCH_OFF': (u'用户当面付付款开关关闭', '40004'),
+            'ACQ.INVALID_STORE_ID': (u'商户门店编号无效', '40004'),
+            'ACQ.SUB_MERCHANT_CREATE_FAIL': (u'二级商户创建失败', '40004'),
+            'ACQ.SUB_MERCHANT_TYPE_INVALID': (u'二级商户类型非法', '40004'),
+            'ACQ.AGREEMENT_NOT_EXIST': (u'用户协议不存在', '40004'),
+            'ACQ.AGREEMENT_INVALID': (u'用户协议失效', '40004'),
+            'ACQ.AGREEMENT_STATUS_NOT_NORMAL': (u'用户协议状态非NORMAL', '40004'),
+            'ACQ.MERCHANT_AGREEMENT_NOT_EXIST': (u'商户协议不存在', '40004'),
+            'ACQ.MERCHANT_AGREEMENT_INVALID': (u'商户协议已失效', '40004'),
+            'ACQ.MERCHANT_STATUS_NOT_NORMAL': (u'商户协议状态非正常状态', '40004')
+        }
+    },
+    'public': {
+        'code': {
+            '10000': u'接口调用成功，调用结果请参考具体的API文档所对应的业务返回参数',
+            '20000': u'服务不可用',
+            '20001': u'授权权限不足',
+            '40001': u'缺少必选参数',
+            '40002': u'非法的参数',
+            '40004': u'业务处理失败',
+            '40006': u'权限不足'
+        },
+        'sub_code': {
+            # sub_code: (sub_msg, code)
+            'isp.unknow-error': (u'服务暂不可用（业务系统不可用）', '10000'),
+            'aop.unknow-error': (u'服务暂不可用（网关自身的未知错误）', '20000'),
+            'aop.invalid-auth-token': (u'无效的访问令牌', '20001'),
+            'aop.auth-token-time-out': (u'访问令牌已过期', '20001'),
+            'aop.invalid-app-auth-token	': (u'无效的应用授权令牌', '20001'),
+            'aop.invalid-app-auth-token-no-api': (u'商户未授权当前接口', '20001'),
+            'aop.app-auth-token-time-out': (u'应用授权令牌已过期', '20001'),
+            'aop.no-product-reg-by-partner': (u'商户未签约任何产品', '20001'),
+            'isv.missing-method': (u'缺少方法名参数', '40001'),
+            'isv.missing-signature': (u'缺少签名参数', '40001'),
+            'isv.missing-signature-type': (u'缺少签名类型参数', '40001'),
+            'isv.missing-signature-key': (u'缺少签名配置', '40001'),
+            'isv.missing-app-id': (u'缺少appId参数', '40001'),
+            'isv.missing-timestamp': (u'缺少时间戳参数', '40001'),
+            'isv.missing-version': (u'缺少版本参数', '40001'),
+            'isv.decryption-error-missing-encrypt-type': (u'解密出错, 未指定加密算法', '40001'),
+            'isv.invalid-parameter': (u'参数无效', '40002'),
+            'isv.upload-fail': (u'文件上传失败', '40002'),
+            'isv.invalid-file-extension': (u'文件扩展名无效', '40002'),
+            'isv.invalid-file-size': (u'文件大小无效', '40002'),
+            'isv.invalid-method': (u'不存在的方法名', '40002'),
+            'isv.invalid-format': (u'无效的数据格式', '40002'),
+            'isv.invalid-signature-type': (u'无效的签名类型', '40002'),
+            'isv.invalid-signature': (u'无效签名', '40002'),
+            'isv.invalid-encrypt-type': (u'无效的加密类型', '40002'),
+            'isv.invalid-encrypt': (u'解密异常', '40002'),
+            'isv.invalid-app-id': (u'无效的appId参数', '40002'),
+            'isv.invalid-timestamp': (u'非法的时间戳参数', '40002'),
+            'isv.invalid-charset': (u'字符集错误', '40002'),
+            'isv.invalid-digest': (u'摘要错误', '40002'),
+            'isv.decryption-error-not-valid-encrypt-type': (u'解密出错，不支持的加密算法', '40002'),
+            'isv.decryption-error-not-valid-encrypt-key': (u'解密出错, 未配置加密密钥或加密密钥格式错误', '40002'),
+            'isv.decryption-error-unknown': (u'解密出错，未知异常', '40002'),
+            'isv.missing-signature-config': (u'验签出错, 未配置对应签名算法的公钥或者证书', '40002'),
+            'isv.not-support-app-auth': (u'本接口不支持第三方代理调用', '40002'),
+            'isv.insufficient-isv-permissions': (u'ISV权限不足', '40006'),
+            'isv.insufficient-user-permissions': (u'用户权限不足', '40006')
+        },
+        'channel': [
+            ('COUPON', u'支付宝红包'),
+            ('ALIPAYACCOUNT', u'支付宝账户'),
+            ('POINT', u'集分宝'),
+            ('DISCOUNT', u'折扣券'),
+            ('PCARD', u'预付卡'),
+            ('MCARD', u'商家储值卡'),
+            ('MDISCOUNT', u'商户优惠券'),
+            ('MCOUPON', u'商户红包'),
+            ('PCREDIT', u'	蚂蚁花呗')
+        ]
     }
 }

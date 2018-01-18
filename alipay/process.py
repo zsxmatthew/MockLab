@@ -6,6 +6,7 @@ import string
 import urllib
 
 import requests
+from django.http import Http404
 from django.utils import timezone
 
 from alipay import schema, conf, notify
@@ -61,12 +62,12 @@ def wap_create_direct_pay_by_user(**kwargs):
 
 
 def alipay_acquire_createandpay(**kwargs):
+    service = kwargs['service']
     AlipayContext.objects.create(out_trade_no=kwargs['out_trade_no'],
-                                 service=kwargs['service'],
+                                 service=service,
                                  partner_id=kwargs['partner'])
     now = timezone.now()
     trade_no = gen_trade_no(**kwargs)
-    service = kwargs['service']
     buyer = None
     if 'buyer_id' in kwargs:
         buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs['buyer_id'])
@@ -94,7 +95,7 @@ def alipay_acquire_createandpay(**kwargs):
     # })
 
     # extract custom options
-    options = json.loads(buyer.other_options) if buyer else {}
+    options = json.loads(buyer.other_options.get(service, {})) if buyer else {}
     if context['is_success'] == 'T':
         context.update(get_optional(options, 'detail_error_code'))
         context.update(get_optional(options, 'detail_error_des'))
@@ -113,7 +114,7 @@ def alipay_acquire_createandpay(**kwargs):
     callback.update(context)
 
     # assemble all parts of context
-    _context = {
+    context_ = {
         'request_': kwargs,  # using 'request' here would shadow another argument in deeper methods
         'schema': get_schema(service),
         'response': context,
@@ -121,18 +122,24 @@ def alipay_acquire_createandpay(**kwargs):
     }
 
     # put complete context into context
-    AlipayContext.objects.filter(out_trade_no=kwargs['out_trade_no']).update(context=json.dumps(_context))
+    AlipayContext.objects.filter(out_trade_no=kwargs['out_trade_no']).update(
+        context=json.dumps(context_),
+        trade_no=trade_no
+    )
 
     # asynchronous notification
     client_method = service2method(kwargs['service'])
     if hasattr(notify, client_method):
         getattr(notify, client_method)(context)
-    return _context
+    return context_
 
 
 def alipay_acquire_query(**kwargs):
     out_trade_no = kwargs.get('out_trade_no')
-    context_ = json.loads(AlipayContext.objects.get(out_trade_no=out_trade_no).context)
+    try:
+        trade_context = json.loads(AlipayContext.objects.get(out_trade_no=out_trade_no).context)
+    except AlipayContext.DoesNotExist:
+        raise Http404('Trade does not exist.')
     context = {}
     for t in schema.RESP_SCHEMA.get(kwargs.get('service')):
         if t[4][0] == 0:  # from request
@@ -140,10 +147,10 @@ def alipay_acquire_query(**kwargs):
         elif t[4][0] == 1:  # from conf
             context[t[0]] = getattr(conf, t[0])
         elif t[4][0] == 3:  # from context
-            if len(t[4]) > 1 and t[4][1] in context_['context']:
-                context[t[0]] = context_['context'].get(t[4][1])
-            elif t[0] in context_['context']:
-                context[t[0]] = context_['context'].get(t[0])
+            if len(t[4]) > 1 and t[4][1] in trade_context['response']:
+                context[t[0]] = trade_context['response'].get(t[4][1])
+            elif t[0] in trade_context['context']:
+                context[t[0]] = trade_context['response'].get(t[0])
     context['sign'] = ""  # TODO, client doesn't verify this
 
     context_ = {
@@ -175,13 +182,14 @@ def alipay_dut_customer_agreement_query(**kwargs):
         external_sign_no = agreement.external_sign_no or None
         agreement_detail = agreement.agreement_detail or None
     except DutCustomerAgreementSign.DoesNotExist:
-        status = 'STOP'
-        valid_time = '1970-01-01 00:00:01'
-        invalid_time = '1970-01-01 00:00:01'
-        sign_time = '1970-01-01 00:00:01'
-        sign_modify_time = '1970-01-01 00:00:01'
-        external_sign_no = None
-        agreement_detail = None
+        # status = 'STOP'
+        # valid_time = '1970-01-01 00:00:01'
+        # invalid_time = '1970-01-01 00:00:01'
+        # sign_time = '1970-01-01 00:00:01'
+        # sign_modify_time = '1970-01-01 00:00:01'
+        # external_sign_no = None
+        # agreement_detail = None
+        raise Http404('No result found.')
     if 'alipay_user_id' in kwargs:
         try:
             user = AlipayUser.objects.get(user_id=kwargs['alipay_user_id'])
@@ -215,6 +223,115 @@ def alipay_dut_customer_agreement_query(**kwargs):
         'response': context
     }
     return context_
+
+
+def alipay_trade_pay(**kwargs):  # json response
+    biz_content = json.loads(kwargs['biz_content'])
+    service = kwargs['method']
+    try:
+        partner = AlipayUser.objects.get(app_id=kwargs['app_id'])
+    except AlipayUser.DoesNotExist:
+        raise Http404('Invalid app_id that does not match with any partner.')
+    AlipayContext.objects.create(out_trade_no=biz_content['out_trade_no'],
+                                 service=service,
+                                 partner=partner)
+    now = timezone.now()
+    trade_no = gen_trade_no(**biz_content)
+    if 'buyer_id' in biz_content:
+        buyer = AlipayUser.objects.get_or_create(user_id=biz_content['buyer_id'])
+    else:
+        last_user = AlipayUser.objects.last()
+        user_id = last_user and last_user.pk + 1 or 2088000000000000
+        buyer = AlipayUser.objects.create(user_id=user_id)
+    options = buyer.other_options.get(service, {})
+    code = options.get('code', None) or '10000'
+    sub_code = options.get('sub_code', None)
+    context = {
+        # public
+        'code': code,
+        'msg': schema.VOCABULARY[kwargs['method']]['code'][code],
+        'sign': '',  # TODO, fake
+        # business
+        'trade_no': trade_no,
+        'out_trade_no': biz_content['out_trade_no'],
+        'buyer_logon_id': buyer.logon_id or '',
+        'total_amount': biz_content['total_amount'],
+        'receipt_amount': biz_content['total_amount'],  # TODO
+        'gmt_payment': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'fund_bill_list': json.dumps({
+            "fund_channel": options.get('fund_channel') or 'ALIPAYACCOUNT',
+            "amount": biz_content['total_amount']  # TODO
+        }),
+        'buyer_user_id': buyer.user_id
+    }
+    if sub_code:
+        context['sub_code'] = sub_code
+        category = 'public' if code != '40004' else kwargs['method']
+        try:
+            context['sub_msg'] = schema.VOCABULARY[category]['sub_code'][sub_code][0]
+        except KeyError:
+            raise Http404('Improper configuration for current buyer: category of sub_code '
+                          'is not in coincidence with code')
+    context.update(get_optional(options, 'buyer_pay_amount'))
+    context.update(get_optional(options, 'point_amount'))
+    context.update(get_optional(options, 'invoice_amount'))
+    context.update(get_optional(options, 'card_balance'))
+    context.update(get_optional(options, 'store_name'))
+    context.update(get_optional(options, 'discount_goods_detail'))
+    context.update(get_optional(options, 'voucher_detail_list'))
+    context.update(get_optional(options, 'business_params'))
+    context.update(get_optional(options, 'buyer_user_type'))
+
+    # assemble all parts of context
+    context_ = {
+        'request_': kwargs,
+        'scheme': get_schema(kwargs['method']),
+        'response': context
+    }
+
+    # put complete context into context
+    AlipayContext.objects.filter(out_trade_no=biz_content['out_trade_no']).update(
+        context=json.dumps(context_),
+        trade_no=trade_no
+    )
+
+    return context
+
+
+def alipay_trade_query(**kwargs):
+    try:
+        biz_content = json.loads(kwargs['biz_content'])
+        if 'trade_no' in biz_content:
+            trade = AlipayContext.objects.get(trade_no=biz_content['trade_no'])
+        else:
+            trade = AlipayContext.objects.get(out_trade_no=biz_content['out_trade_no'])
+        trade_context = json.loads(trade.context)
+    except AlipayContext.DoesNotExist:
+        raise Http404('Trade does not exist.')
+    context = {
+        # public
+        'code': '1000',  # TODO, generally speaking we don't make such query directly in testing
+        'msg': schema.VOCABULARY['public']['1000'],
+        'sign': '',  # TODO, fake
+        # business
+        'trade_no': trade_context['response']['trade_no'],
+        'out_trade_no': trade_context['response']['out_trade_no'],
+        'buyer_logon_id': trade_context['response']['buyer_logon_id'],
+        'trade_status': 'TRADE_SUCCESS' if trade_context['response']['code'] == '10000' else 'TRADE_CLOSED',
+        'total_amount': trade_context['response']['total_amount'],
+        'fund_bill_list': trade_context['response']['fund_bill_list'],
+        'buyer_user_id': trade_context['response']['buyer_user_id'],
+    }
+    context.update(get_optional(trade_context['response'], 'receipt_amount'))
+    context.update(get_optional(trade_context['response'], 'buyer_pay_amount'))
+    context.update(get_optional(trade_context['response'], 'point_amount'))
+    context.update(get_optional(trade_context['response'], 'invoice_amount'))
+    context.update(get_optional(trade_context['request'], 'store_id'))
+    context.update(get_optional(trade_context['request'], 'terminal_id'))
+    context.update(get_optional(trade_context['response'], 'store_name'))
+    context.update(get_optional(trade_context['response'], 'buyer_user_type'))
+
+    return context
 
 
 def get_schema(service):

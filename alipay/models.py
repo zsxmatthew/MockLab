@@ -9,6 +9,7 @@ class AlipayUser(models.Model):
     logon_id = models.TextField(blank=True, null=True)  # mobile or email
     is_success = models.IntegerField(default=0)  # 0 means T
     other_options = models.TextField(blank=True, null=True)  # json
+    app_id = models.CharField(max_length=32, blank=True, null=True)
 
 
 class AlipayContext(models.Model):
