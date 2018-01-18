@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95ea3596-b9a3-4d58-8593-7dc412f19e0d" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/alipayclient.py" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/MockLab/settings.py" afterPath="$PROJECT_DIR$/MockLab/settings.py" />
-      <change beforePath="$PROJECT_DIR$/alipay/models.py" afterPath="$PROJECT_DIR$/alipay/models.py" />
-      <change beforePath="$PROJECT_DIR$/alipay/process.py" afterPath="$PROJECT_DIR$/alipay/process.py" />
-      <change beforePath="$PROJECT_DIR$/alipay/schema.py" afterPath="$PROJECT_DIR$/alipay/schema.py" />
-      <change beforePath="$PROJECT_DIR$/alipay/views.py" afterPath="$PROJECT_DIR$/alipay/views.py" />
+      <change beforePath="$PROJECT_DIR$/alipay_proxy/models.py" afterPath="$PROJECT_DIR$/alipay_proxy/models.py" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/httpRequests/" />
@@ -66,95 +59,97 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="process.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/alipay/process.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-12">
-                  <caret line="163" column="50" lean-forward="false" selection-start-line="163" selection-start-column="50" selection-end-line="163" selection-end-column="50" />
-                  <folding>
-                    <element signature="e#416#998#0" expanded="false" />
-                    <element signature="e#1050#2403#0" expanded="false" />
-                    <element signature="e#2453#5292#0" expanded="false" />
-                    <element signature="e#5335#6333#0" expanded="false" />
-                    <element signature="e#6391#9258#0" expanded="false" />
-                    <element signature="e#9314#12305#0" expanded="false" />
-                    <element signature="e#12346#14146#0" expanded="false" />
-                    <element signature="e#14178#14746#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="schema.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/alipay/schema.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="247">
-                  <caret line="483" column="39" lean-forward="false" selection-start-line="483" selection-start-column="39" selection-end-line="483" selection-end-column="39" />
-                  <folding>
-                    <element signature="e#331#3150#0" expanded="false" />
-                    <element signature="e#3212#4338#0" expanded="false" />
-                    <element signature="e#4414#4960#0" expanded="false" />
-                    <element signature="e#5025#6016#0" expanded="false" />
-                    <element signature="e#6077#6726#0" expanded="false" />
-                    <element signature="e#6785#8475#0" expanded="false" />
-                    <element signature="e#8612#9635#0" expanded="false" />
-                    <element signature="e#9697#10575#0" expanded="false" />
-                    <element signature="e#10687#11748#0" expanded="false" />
-                    <element signature="e#11813#12885#0" expanded="false" />
-                    <element signature="e#12946#14154#0" expanded="false" />
-                    <element signature="e#14213#15611#0" expanded="false" />
-                    <element signature="e#15691#17342#0" expanded="false" />
-                    <element signature="e#17404#18995#0" expanded="false" />
-                    <element signature="e#19083#20203#0" expanded="false" />
-                    <element signature="e#20263#22934#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="alipayclient.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/utils/alipayclient.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="513">
-                  <caret line="71" column="0" lean-forward="true" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#171#1139#0" expanded="false" />
-                    <element signature="e#1184#1675#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/alipay/models.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="221">
-                  <caret line="20" column="53" lean-forward="true" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/alipay/models.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="221">
-                  <caret line="20" column="53" lean-forward="false" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="process.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/alipay/process.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="292">
+              <caret line="173" column="39" lean-forward="false" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
+              <folding>
+                <element signature="e#416#998#0" expanded="false" />
+                <element signature="e#1050#2403#0" expanded="false" />
+                <element signature="e#2453#5292#0" expanded="false" />
+                <element signature="e#5335#6333#0" expanded="false" />
+                <element signature="e#9314#12305#0" expanded="false" />
+                <element signature="e#12346#14146#0" expanded="false" />
+                <element signature="e#14178#14746#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="process.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/alipay_proxy/process.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="26" column="47" lean-forward="false" selection-start-line="26" selection-start-column="47" selection-end-line="26" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/alipay_proxy/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="22" column="39" lean-forward="false" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="schema.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/alipay/schema.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="483" column="39" lean-forward="false" selection-start-line="483" selection-start-column="39" selection-end-line="483" selection-end-column="39" />
+              <folding>
+                <element signature="e#331#3150#0" expanded="false" />
+                <element signature="e#3212#4338#0" expanded="false" />
+                <element signature="e#4414#4960#0" expanded="false" />
+                <element signature="e#5025#6016#0" expanded="false" />
+                <element signature="e#6077#6726#0" expanded="false" />
+                <element signature="e#6785#8475#0" expanded="false" />
+                <element signature="e#8612#9635#0" expanded="false" />
+                <element signature="e#9697#10575#0" expanded="false" />
+                <element signature="e#10687#11748#0" expanded="false" />
+                <element signature="e#11813#12885#0" expanded="false" />
+                <element signature="e#12946#14154#0" expanded="false" />
+                <element signature="e#14213#15611#0" expanded="false" />
+                <element signature="e#15691#17342#0" expanded="false" />
+                <element signature="e#17404#18995#0" expanded="false" />
+                <element signature="e#19083#20203#0" expanded="false" />
+                <element signature="e#20263#22934#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="alipayclient.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils/alipayclient.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="341">
+              <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+              <folding>
+                <element signature="e#171#1139#0" expanded="false" />
+                <element signature="e#1184#1675#0" expanded="false" />
+                <element signature="e#1723#1975#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/alipay/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="20" column="53" lean-forward="false" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -166,7 +161,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>*********************</find>
       <find>sign</find>
       <find>paytools_pay_amount</find>
       <find>date</find>
@@ -196,6 +190,7 @@
       <find>(9,</find>
       <find>other_options</find>
       <find>trade_context</find>
+      <find>external_sign_no=</find>
     </findStrings>
     <replaceStrings>
       <replace>kwargs.get</replace>
@@ -247,22 +242,22 @@
         <option value="$PROJECT_DIR$/alipay/notify.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.http" />
         <option value="$PROJECT_DIR$/alipay_proxy/urls.py" />
-        <option value="$PROJECT_DIR$/alipay_proxy/process.py" />
-        <option value="$PROJECT_DIR$/alipay_proxy/models.py" />
         <option value="$PROJECT_DIR$/alipay_proxy/tests.py" />
         <option value="$PROJECT_DIR$/demo.py" />
         <option value="$PROJECT_DIR$/utils/helpers.py" />
         <option value="$PROJECT_DIR$/backdoor/views.py" />
         <option value="$PROJECT_DIR$/backdoor/urls.py" />
-        <option value="$PROJECT_DIR$/MockLab/urls.py" />
         <option value="$PROJECT_DIR$/backdoor/serializers.py" />
         <option value="$PROJECT_DIR$/alipay/templates/alipay.xml" />
         <option value="$PROJECT_DIR$/MockLab/settings.py" />
         <option value="$PROJECT_DIR$/alipay/models.py" />
         <option value="$PROJECT_DIR$/alipay/views.py" />
         <option value="$PROJECT_DIR$/alipay/schema.py" />
-        <option value="$PROJECT_DIR$/alipay/process.py" />
         <option value="$PROJECT_DIR$/utils/alipayclient.py" />
+        <option value="$PROJECT_DIR$/MockLab/urls.py" />
+        <option value="$PROJECT_DIR$/alipay/process.py" />
+        <option value="$PROJECT_DIR$/alipay_proxy/models.py" />
+        <option value="$PROJECT_DIR$/alipay_proxy/process.py" />
       </list>
     </option>
   </component>
@@ -332,7 +327,7 @@
             <path>
               <item name="MockLab" type="b2602c69:ProjectViewProjectNode" />
               <item name="MockLab" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="MockLab" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -609,8 +604,8 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="MockLab.settings" />
+        <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="C:\Python27\python.exe" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -622,7 +617,7 @@
       <option name="port" value="443" />
       <option name="host" value="10.5.50.57" />
       <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="http://10.5.50.57:8003/" />
+      <option name="browserUrl" value="https://10.5.50.57:443/" />
       <option name="runTestServer" value="false" />
       <option name="runNoReload" value="false" />
       <option name="useCustomRunCommand" value="true" />
@@ -802,7 +797,14 @@
       <option name="project" value="LOCAL" />
       <updated>1516082752159</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="1. added 2 more openapi methods and test classes for them:&#10;- alipay.trade.query&#10;- alipay.trade.pay&#10;2. updated some mapi services and the template&#10;3. udpated AlipayView to support both openapi and mapi">
+      <created>1516255440670</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1516255440671</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -818,15 +820,16 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293718" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4567063" sideWeight="0.5045386" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34353742" sideWeight="0.5030257" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3622449" sideWeight="0.49546143" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3622449" sideWeight="0.49546143" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3469388" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34353742" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1785174" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="-14" y="101" width="177" height="612" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34353742" sideWeight="0.4969743" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1785174" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="-14" y="101" width="177" height="612" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Utils" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290469" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32829046" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1376702" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -841,7 +844,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43537414" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -856,7 +858,8 @@
     <MESSAGE value="fixed alipay_aquire_createandpay process function to handle optional parameter 'buyer' and 'seller' properly" />
     <MESSAGE value="fixed alipay_aquire_createandpay process function, pay_result field of AlipayUser model has been replaced by is_success" />
     <MESSAGE value="1. updated backdoor app to use rest framework viewsets so that user can use it on web ui&#10;2. added alipay api: alipay.dut.customer.agreement.query" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. updated backdoor app to use rest framework viewsets so that user can use it on web ui&#10;2. added alipay api: alipay.dut.customer.agreement.query" />
+    <MESSAGE value="1. added 2 more openapi methods and test classes for them:&#10;- alipay.trade.query&#10;- alipay.trade.pay&#10;2. updated some mapi services and the template&#10;3. udpated AlipayView to support both openapi and mapi" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. added 2 more openapi methods and test classes for them:&#10;- alipay.trade.query&#10;- alipay.trade.pay&#10;2. updated some mapi services and the template&#10;3. udpated AlipayView to support both openapi and mapi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1072,14 +1075,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/alipay_proxy/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/site-packages/rest_framework/fields.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -1145,13 +1140,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/alipay/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/helpers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
@@ -1160,24 +1148,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MockLab/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MockLab/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="245">
           <caret line="128" column="0" lean-forward="true" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/alipay_proxy/process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="14" column="64" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="64" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1193,6 +1168,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
           <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1200,6 +1176,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-211">
           <caret line="109" column="6" lean-forward="false" selection-start-line="109" selection-start-column="6" selection-end-line="109" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1208,13 +1185,6 @@
         <state relative-caret-position="228">
           <caret line="42" column="4" lean-forward="true" selection-start-line="42" selection-start-column="4" selection-end-line="43" selection-end-column="71" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/alipay/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="48" column="92" lean-forward="false" selection-start-line="48" selection-start-column="92" selection-end-line="48" selection-end-column="92" />
         </state>
       </provider>
     </entry>
@@ -1263,6 +1233,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/alipay/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="6" column="16" lean-forward="false" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MockLab/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="21" column="42" lean-forward="false" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/alipay/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="21" column="32" lean-forward="true" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+          <folding>
+            <element signature="e#1820#1861#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/alipayclient.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+          <folding>
+            <element signature="e#171#1139#0" expanded="false" />
+            <element signature="e#1184#1675#0" expanded="false" />
+            <element signature="e#1723#1975#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/alipay/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="20" column="53" lean-forward="false" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/alipay/schema.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
@@ -1288,24 +1304,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/alipay/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="20" column="53" lean-forward="true" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/alipay/process.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12">
-          <caret line="163" column="50" lean-forward="false" selection-start-line="163" selection-start-column="50" selection-end-line="163" selection-end-column="50" />
+        <state relative-caret-position="292">
+          <caret line="173" column="39" lean-forward="false" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
           <folding>
             <element signature="e#416#998#0" expanded="false" />
             <element signature="e#1050#2403#0" expanded="false" />
             <element signature="e#2453#5292#0" expanded="false" />
             <element signature="e#5335#6333#0" expanded="false" />
-            <element signature="e#6391#9258#0" expanded="false" />
             <element signature="e#9314#12305#0" expanded="false" />
             <element signature="e#12346#14146#0" expanded="false" />
             <element signature="e#14178#14746#0" expanded="false" />
@@ -1313,14 +1320,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/alipayclient.py">
+    <entry file="file://$PROJECT_DIR$/alipay_proxy/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="71" column="0" lean-forward="true" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-          <folding>
-            <element signature="e#171#1139#0" expanded="false" />
-            <element signature="e#1184#1675#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="342">
+          <caret line="22" column="39" lean-forward="false" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/alipay_proxy/process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="26" column="47" lean-forward="false" selection-start-line="26" selection-start-column="47" selection-end-line="26" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
