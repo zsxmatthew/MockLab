@@ -175,10 +175,10 @@ def alipay_dut_customer_agreement_query(**kwargs):
         else:
             agreement = agreements.first()
         status = agreement.status
-        valid_time = agreement.valid_time.strftime('%Y-%m-%d %H:%M:%')
-        invalid_time = agreement.invalid_time.strftime('%Y-%m-%d %H:%M:%')
-        sign_time = agreement.sign_time.strftime('%Y-%m-%d %H:%M:%')
-        sign_modify_time = agreement.sign_modify_time('%Y-%m-%d %H:%M:%S')
+        valid_time = agreement.valid_time.strftime('%Y-%m-%d %H:%M:%S')
+        invalid_time = agreement.invalid_time.strftime('%Y-%m-%d %H:%M:%S')
+        sign_time = agreement.sign_time.strftime('%Y-%m-%d %H:%M:%S')
+        sign_modify_time = agreement.sign_modify_time.strftime('%Y-%m-%d %H:%M:%S')
         external_sign_no = agreement.external_sign_no or None
         agreement_detail = agreement.agreement_detail or None
     except DutCustomerAgreementSign.DoesNotExist:
