@@ -96,7 +96,7 @@ def alipay_acquire_createandpay(view, **kwargs):
     # })
 
     # extract custom options
-    options = json.loads(buyer.other_options.get(service, {})) if buyer else {}
+    options = json.loads((buyer.other_options or {}).get(service, {})) if buyer else {}
     if context['is_success'] == 'T':
         context.update(get_optional(options, 'detail_error_code'))
         context.update(get_optional(options, 'detail_error_des'))
@@ -247,7 +247,7 @@ def alipay_trade_pay(view, **kwargs):  # bar code, json response
         last_user = AlipayUser.objects.last()
         user_id = last_user and last_user.pk + 1 or 2088000000000000
         buyer = AlipayUser.objects.create(user_id=user_id)
-    options = buyer.other_options.get(service, {})
+    options = (buyer.other_options or {}).get(service, {})
     code = options.get('code', None) or '10000'
     sub_code = options.get('sub_code', None)
     context = {

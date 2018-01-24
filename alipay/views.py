@@ -19,7 +19,7 @@ from utils.helpers import service2method, get_optional
 
 
 class AlipayView(JsonResponseMixin, TemplateView):
-    template_name = 'alipay.xml'
+    template_name = 'alipay_acquire_createandpay.xml'
 
     def __init__(self, **kwargs):
         super(AlipayView, self).__init__(**kwargs)
