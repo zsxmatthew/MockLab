@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="95ea3596-b9a3-4d58-8593-7dc412f19e0d" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/alipay/process.py" afterPath="$PROJECT_DIR$/alipay/process.py" />
-      <change beforePath="$PROJECT_DIR$/alipay/schema.py" afterPath="$PROJECT_DIR$/alipay/schema.py" />
       <change beforePath="$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml" afterPath="$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/httpRequests/" />
@@ -109,7 +107,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="process.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="process.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/alipay/process.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1223">
@@ -124,11 +122,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="alipay_dut_customer_agreement_query.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="alipay_dut_customer_agreement_query.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="14" column="14" lean-forward="true" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
+            <state relative-caret-position="19">
+              <caret line="1" column="79" lean-forward="false" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
               <folding />
             </state>
           </provider>
@@ -251,9 +249,9 @@
         <option value="$PROJECT_DIR$/alipay_proxy/process.py" />
         <option value="$PROJECT_DIR$/utils/alipayclient.py" />
         <option value="$PROJECT_DIR$/alipay/views.py" />
-        <option value="$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml" />
         <option value="$PROJECT_DIR$/alipay/schema.py" />
         <option value="$PROJECT_DIR$/alipay/process.py" />
+        <option value="$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml" />
       </list>
     </option>
   </component>
@@ -826,7 +824,14 @@
       <option name="project" value="LOCAL" />
       <updated>1516766948523</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="added some optional parameters in response of alipay.dut.customer.agreement.query">
+      <created>1516778254238</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1516778254238</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -884,7 +889,8 @@
     <MESSAGE value="updated external_sign_no field from uuid to text to solve equal comparison problem" />
     <MESSAGE value="fixed some time formatting problems" />
     <MESSAGE value="1. partially added app payment api&#10;2. updated alipay view:&#10;- more flexible template determine mechanism&#10;- more templates" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. partially added app payment api&#10;2. updated alipay view:&#10;- more flexible template determine mechanism&#10;- more templates" />
+    <MESSAGE value="added some optional parameters in response of alipay.dut.customer.agreement.query" />
+    <option name="LAST_COMMIT_MESSAGE" value="added some optional parameters in response of alipay.dut.customer.agreement.query" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1295,14 +1301,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="14" column="14" lean-forward="true" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/alipay/schema.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
@@ -1339,6 +1337,14 @@
             <element signature="e#12619#14444#0" expanded="false" />
             <element signature="e#15186#15754#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="79" lean-forward="false" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
+          <folding />
         </state>
       </provider>
     </entry>
