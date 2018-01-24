@@ -82,8 +82,8 @@
       <file leaf-file-name="schema.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/alipay/schema.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="268" column="18" lean-forward="false" selection-start-line="268" selection-start-column="18" selection-end-line="268" selection-end-column="18" />
+            <state relative-caret-position="209">
+              <caret line="268" column="65" lean-forward="true" selection-start-line="268" selection-start-column="65" selection-end-line="268" selection-end-column="65" />
               <folding>
                 <element signature="e#331#3150#0" expanded="false" />
                 <element signature="e#3212#4338#0" expanded="false" />
@@ -126,7 +126,7 @@
         <entry file="file://$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="19">
-              <caret line="1" column="79" lean-forward="false" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
+              <caret line="1" column="385" lean-forward="true" selection-start-line="1" selection-start-column="385" selection-end-line="1" selection-end-column="385" />
               <folding />
             </state>
           </provider>
@@ -831,7 +831,14 @@
       <option name="project" value="LOCAL" />
       <updated>1516778254238</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="flatted template of alipay.dut.customer.agreement.query">
+      <created>1516778513172</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1516778513172</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView">
@@ -890,7 +897,8 @@
     <MESSAGE value="fixed some time formatting problems" />
     <MESSAGE value="1. partially added app payment api&#10;2. updated alipay view:&#10;- more flexible template determine mechanism&#10;- more templates" />
     <MESSAGE value="added some optional parameters in response of alipay.dut.customer.agreement.query" />
-    <option name="LAST_COMMIT_MESSAGE" value="added some optional parameters in response of alipay.dut.customer.agreement.query" />
+    <MESSAGE value="flatted template of alipay.dut.customer.agreement.query" />
+    <option name="LAST_COMMIT_MESSAGE" value="flatted template of alipay.dut.customer.agreement.query" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1301,10 +1309,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/alipay/process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1223">
+          <caret line="219" column="54" lean-forward="false" selection-start-line="219" selection-start-column="54" selection-end-line="219" selection-end-column="54" />
+          <folding>
+            <element signature="e#416#998#0" expanded="false" />
+            <element signature="e#1056#2409#0" expanded="false" />
+            <element signature="e#12619#14444#0" expanded="false" />
+            <element signature="e#15186#15754#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/alipay/schema.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="268" column="18" lean-forward="false" selection-start-line="268" selection-start-column="18" selection-end-line="268" selection-end-column="18" />
+        <state relative-caret-position="209">
+          <caret line="268" column="65" lean-forward="true" selection-start-line="268" selection-start-column="65" selection-end-line="268" selection-end-column="65" />
           <folding>
             <element signature="e#331#3150#0" expanded="false" />
             <element signature="e#3212#4338#0" expanded="false" />
@@ -1327,23 +1348,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/alipay/process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1223">
-          <caret line="219" column="54" lean-forward="false" selection-start-line="219" selection-start-column="54" selection-end-line="219" selection-end-column="54" />
-          <folding>
-            <element signature="e#416#998#0" expanded="false" />
-            <element signature="e#1056#2409#0" expanded="false" />
-            <element signature="e#12619#14444#0" expanded="false" />
-            <element signature="e#15186#15754#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/alipay/templates/alipay_dut_customer_agreement_query.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
-          <caret line="1" column="79" lean-forward="false" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
+          <caret line="1" column="385" lean-forward="true" selection-start-line="1" selection-start-column="385" selection-end-line="1" selection-end-column="385" />
           <folding />
         </state>
       </provider>
