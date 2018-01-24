@@ -149,6 +149,32 @@ REQ_SCHEMA = {
         ('terminal_id', 'string', (32,), True, u'商户机具终端编号'),
         ('extend_params', 'json', (), True, u'业务扩展参数'),
         ('timeout_express', 'string', (6,), True, u'该笔订单允许的最晚付款时间')
+    ),
+    'mobile.securitypay.pay': (
+        # public
+        ('service', 'string', (), False, u'接口名称'),
+        ('partner', 'string', (16,), False, u'合作者身份ID'),
+        ('_input_charset', 'string', (), False, u'参数编码字符集'),
+        ('sign_type', 'string', (), False, u'签名方式'),
+        ('sign', 'string', (), False, u'签名'),
+        ('notify_url', 'string', (200,), False, u'服务器异步通知页面路径'),
+        ('app_id', 'string', (), True, u'客户端号'),
+        ('appenv', 'string', (), True, u'客户端来源'),
+        ('out_trade_no', 'string', (64,), False, u'商户网站唯一订单号'),
+        ('subject', 'string', (128,), False, u'商品名称'),
+        ('payment_type', 'string', (4,), False, u'支付类型'),
+        ('seller_id', 'string', (16,), False, u'卖家支付宝账号'),
+        ('total_fee', 'number', (), False, u'总金额'),
+        ('body', 'string', (512,), False, u'商品详情'),
+        ('goods_type', 'string', (1,), True, u'商品类型'),
+        ('hb_fq_param', 'string', (), True, u'花呗分期参数'),
+        ('rn_check', 'string', (1,), True, u'是否发起实名校验'),
+        ('it_b_pay', 'string', (), True, u'未付款交易的超时时间'),
+        ('extern_token', 'string', (32,), True, u'授权令牌'),
+        ('promo_params', 'string', (128,), True, u'商户优惠活动参数'),
+        ('extend_params', 'string', (), True, u'业务扩展参数'),
+        # business
+        ('TRANS_MEMO', 'string', (128,), True, u'账务备注')
     )
 }
 
@@ -206,7 +232,7 @@ RESP_SCHEMA = {
         ('extend_info_list', 'xml', (), True, (3,), u'本次交易返回的扩展信息')
     ),
     'alipay.dut.customer.agreement.page.sign': (
-        ('is_success', 'string', (1,), False, (1,), u'是否成功'),
+        # ('is_success', 'string', (1,), False, (1,), u'是否成功'),
         ('sign_type', 'string', (), False, (1,), u'签名方式'),  # DSA, RSA, MD5
         ('sign', 'string', (32,), False, (2,), u'签名'),
         ('_input_charset', 'string', (), True, (1,), u'参数编码字符集'),
@@ -225,7 +251,7 @@ RESP_SCHEMA = {
         ('external_sign_no', 'string', (), True, (0,), u'商户签约号')
     ),
     'alipay.dut.customer.agreement.query': (
-        ('is_success', 'string', (), False, (2,), u'是否成功'),  # T/F
+        # ('is_success', 'string', (), False, (2,), u'是否成功'),  # T/F
         ('sign_type', 'string', (), True, (1,), u'签名方式'),  # DSA/RSA/MD5
         ('sign', 'sring', (), True, (2,), u'签名'),
         ('error', 'string', (), True, (2,), u'错误代码'),
@@ -268,6 +294,12 @@ RESP_SCHEMA = {
         ('voucher_detail_list', 'json', (), True, u'本交易支付时使用的所有优惠券信息'),
         ('business_params', 'string', (512,), True, u'商户传入业务信息'),
         ('buyer_user_type', 'string', (18,), True, u'买家用户类型')
+    ),
+    'mobile.securitypay.pay': (
+        # public
+        ('resultStatus', 'string', (), False, (2,), u'状态代码'),
+        ('result', 'string', (), False, (2,), u'本次操作返回的结果数据'),
+        ('memo', 'string', (), True, (2,), u'提示信息')
     )
 }
 

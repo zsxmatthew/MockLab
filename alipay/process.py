@@ -28,7 +28,7 @@ def gen_trade_no(**kwargs):
     return trade_no
 
 
-def wap_create_direct_pay_by_user(**kwargs):
+def wap_create_direct_pay_by_user(view, **kwargs):
     now = timezone.now()
     service = kwargs['service']
     context = {
@@ -61,7 +61,8 @@ def wap_create_direct_pay_by_user(**kwargs):
     return {}  # don't respond
 
 
-def alipay_acquire_createandpay(**kwargs):
+def alipay_acquire_createandpay(view, **kwargs):
+    view.template_name = 'alipay_acquire_createandpay.xml'
     service = kwargs['service']
     AlipayContext.objects.create(out_trade_no=kwargs['out_trade_no'],
                                  service=service,
@@ -134,7 +135,7 @@ def alipay_acquire_createandpay(**kwargs):
     return context_
 
 
-def alipay_acquire_query(**kwargs):
+def alipay_acquire_query(view, **kwargs):
     out_trade_no = kwargs.get('out_trade_no')
     try:
         trade_context = json.loads(AlipayContext.objects.get(out_trade_no=out_trade_no).context)
@@ -161,7 +162,8 @@ def alipay_acquire_query(**kwargs):
     return context_
 
 
-def alipay_dut_customer_agreement_query(**kwargs):
+def alipay_dut_customer_agreement_query(view, **kwargs):
+    view.template_name = 'alipay_dut_customer_agreement_query.xml'
     user = None
     try:
         if 'alipay_user_id' in kwargs:
@@ -225,7 +227,8 @@ def alipay_dut_customer_agreement_query(**kwargs):
     return context_
 
 
-def alipay_trade_pay(**kwargs):  # json response
+def alipay_trade_pay(view, **kwargs):  # bar code, json response
+    view.format = 'json'
     biz_content = json.loads(kwargs['biz_content'])
     service = kwargs['method']
     try:
@@ -238,7 +241,7 @@ def alipay_trade_pay(**kwargs):  # json response
     now = timezone.now()
     trade_no = gen_trade_no(**biz_content)
     if 'buyer_id' in biz_content:
-        buyer = AlipayUser.objects.get_or_create(user_id=biz_content['buyer_id'])
+        buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=biz_content['buyer_id'])
     else:
         last_user = AlipayUser.objects.last()
         user_id = last_user and last_user.pk + 1 or 2088000000000000
@@ -298,7 +301,8 @@ def alipay_trade_pay(**kwargs):  # json response
     return context
 
 
-def alipay_trade_query(**kwargs):
+def alipay_trade_query(view, **kwargs):
+    view.format = 'json'
     try:
         biz_content = json.loads(kwargs['biz_content'])
         if 'trade_no' in biz_content:
@@ -332,6 +336,21 @@ def alipay_trade_query(**kwargs):
     context.update(get_optional(trade_context['response'], 'buyer_user_type'))
 
     return context
+
+
+def mobile_securitypay_pay(view, **kwargs):  # mobile app pay
+    """
+    partner="2088801473085644"&seller_id="zhifubao@etcp.cn"&out_trade_no="p1516695671513110859803"
+    &subject="ETCP停车费支付"&body="ETCP停车费支付"&total_fee="0.01"
+    &notify_url="http://newpay.test.etcp.cn/service/paymentnotify/notifyalipay"&service="mobile.securitypay.pay"
+    &payment_type="1"&_input_charset="utf-8"&it_b_pay="30m"&extend_params={"AGENT_ID":"2088821587787865"}
+    &return_url="m.alipay.com"
+    :param kwargs:
+    :return:
+    """
+    buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs.get('partner'))
+    result_status = None
+    orig = u'&'.join(['{}="{}"'.format(k, v) for k, v in kwargs.items()])
 
 
 def get_schema(service):

@@ -23,7 +23,8 @@ class AlipayView(JsonResponseMixin, TemplateView):
 
     def __init__(self, **kwargs):
         super(AlipayView, self).__init__(**kwargs)
-        self.format = 'xml'  # identify mapi or openapi
+        self.format = None
+        self.service = None
 
     def get_context_data(self, **kwargs):
         context_ = super(AlipayView, self).get_context_data(**kwargs)
@@ -40,17 +41,18 @@ class AlipayView(JsonResponseMixin, TemplateView):
                 pass
 
         if 'service' in context_:
-            client_method = service2method(context_.get('service', ''))  # mapi
+            self.service = service2method(context_.get('service', ''))  # mapi
+
         elif 'method' in context_:
-            client_method = service2method(context_.get('method', ''))  # openapi
+            self.service = service2method(context_.get('method', ''))  # openapi
         else:
-            client_method = ''
+            self.service = ''
 
         if 'format' in context_:  # this field only exists in public part of openapi request
             self.format = context_['format'].lower()
 
-        if hasattr(process, client_method):
-            return getattr(process, client_method)(**context_)
+        if hasattr(process, self.service):
+            return getattr(process, self.service)(self, **context_)
         else:
             return {}
 

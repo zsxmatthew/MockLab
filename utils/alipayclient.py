@@ -55,6 +55,8 @@ class DefaultAlipayResponse(object):
 class DefaultAlipayTradeRequest(object):
     def __init__(self):
         self.biz_content = {}
+        self.method = None
+        self.set_method()
 
     def set_biz_content(self, data=None, **kwargs):
         try:
@@ -65,12 +67,10 @@ class DefaultAlipayTradeRequest(object):
 
 
 class AlipayTradePayRequest(DefaultAlipayTradeRequest):
-    def __init__(self):
+    def set_method(self):
         self.method = "alipay.trade.pay"
-        super(AlipayTradePayRequest, self).__init__()
 
 
 class AlipayTradeQueryRequest(DefaultAlipayTradeRequest):
-    def __init__(self):
+    def set_method(self):
         self.method = "alipay.trade.query"
-        super(AlipayTradeQueryRequest, self).__init__()
