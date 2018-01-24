@@ -267,7 +267,8 @@ RESP_SCHEMA = {
         ('sign_time', 'date', (), False, (3,), u'签约时间'),  # yyyy-MM-dd HH:MM:SS
         ('sign_modify_time', 'date', (), False, (3,), u'签约修改时间'),  # yyyy-MM-dd HH:MM:SS
         ('external_sign_no', 'string', (), True, (3,), u'商户签约号'),
-        ('agreement_detail', 'string', (), True, (3,), u'协议细则')
+        ('agreement_detail', 'string', (), True, (3,), u'协议细则'),
+        ('agreement_no', 'string', (), True, (3,), u'协议号')
     ),
     'alipay.trade.pay': (
         # public

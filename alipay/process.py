@@ -183,6 +183,7 @@ def alipay_dut_customer_agreement_query(view, **kwargs):
         sign_modify_time = agreement.sign_modify_time.strftime('%Y-%m-%d %H:%M:%S')
         external_sign_no = agreement.external_sign_no or None
         agreement_detail = agreement.agreement_detail or None
+        agreement_no = agreement.agreement_no or None
     except DutCustomerAgreementSign.DoesNotExist:
         # status = 'STOP'
         # valid_time = '1970-01-01 00:00:01'
@@ -206,17 +207,17 @@ def alipay_dut_customer_agreement_query(view, **kwargs):
         'product_code': kwargs['product_code'],
         'scene': kwargs['scene'] or 'DEFAULT|DEFAULT',
         'thirdpart_type': 'PARTNER',
-        'thirdpart_id': 'PARTNER_TAOBAO_ORDER',
+        'thirdpart_id': kwargs['partner'],
         'status': status,
         'valid_time': valid_time,
         'invalid_time': invalid_time,
         'sign_time': sign_time,
-        'sign_modify_time': sign_modify_time
+        'sign_modify_time': sign_modify_time,
+        'agreement_detail': agreement_detail or '{}',
+        'agreement_no': agreement_no
     }
     if external_sign_no:  # optional
         context['external_sign_no'] = external_sign_no
-    if agreement_detail:  # optional
-        context['agreement_detail'] = agreement_detail
     if context['is_success'] == 'F':  # error should not be available if query succeeds
         context.update(get_optional(kwargs, 'error'))
     context_ = {
