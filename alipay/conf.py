@@ -9,3 +9,4 @@ md5_secret = ''
 is_success = 'T'
 is_success_options = ['T', 'F']
 trade_status_index = 2
+trade_center_host = '10.103.50.47:8889'

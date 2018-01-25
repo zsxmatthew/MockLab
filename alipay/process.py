@@ -4,8 +4,10 @@ import math
 import random
 import string
 import urllib
+from threading import Thread
 
 import requests
+import time
 from django.http import Http404
 from django.utils import timezone
 
@@ -132,6 +134,9 @@ def alipay_acquire_createandpay(view, **kwargs):
     client_method = service2method(kwargs['service'])
     if hasattr(notify, client_method):
         getattr(notify, client_method)(context)
+
+    Thread(target=trigger_query).start()
+
     return context_
 
 
@@ -351,7 +356,10 @@ def mobile_securitypay_pay(view, **kwargs):  # mobile app pay
     """
     buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs.get('partner'))
     result_status = None
-    orig = u'&'.join(['{}="{}"'.format(k, v) for k, v in kwargs.items()])
+    orig = u'&'.join(['{}="{}"'.format(k, v) for k, v in kwargs.items() if k not in ('sign_type', 'sign')])
+    option = json.loads(buyer.other_options or '{}').get(kwargs['service'], {})
+    success = option.get('success', 'true')
+    result = orig + 'success="{}"'
 
 
 def get_schema(service):
@@ -367,3 +375,8 @@ def get_schema(service):
                          if field[3] and field[0] not in ('sign', 'sign_type')]
         },
     }
+
+
+def trigger_query():
+    time.sleep(3)
+    requests.get(conf.trade_center_host + '/service/trade/2.2.2/queryOrderByAllWithhold')
