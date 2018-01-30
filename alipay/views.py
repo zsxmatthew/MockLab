@@ -2,20 +2,13 @@
 from __future__ import unicode_literals
 
 import json
-import random
-import string
 
-# Create your views here.
-import requests
-
-from Crypto.Random import random
-
-from django.utils import timezone
+from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 from alipay import conf, process
 from ext.views.generic import JsonResponseMixin
-from utils.helpers import service2method, get_optional
+from utils.helpers import service2method
 
 
 class AlipayView(JsonResponseMixin, TemplateView):
@@ -62,5 +55,7 @@ class AlipayView(JsonResponseMixin, TemplateView):
     def render_to_response(self, context, **response_kwargs):
         if self.format == 'json':  # openapi only supports json response
             return self.render_to_json_response(context, **response_kwargs)
-        else:  # mapi supports xml so far
+        elif self.format == 'text':  # part of mapi supports text
+            return HttpResponse(context)
+        else:  # most mapi supports xml so far
             return super(AlipayView, self).render_to_response(context, **response_kwargs)

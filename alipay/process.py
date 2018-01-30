@@ -16,6 +16,9 @@ from alipay.models import AlipayContext, AlipayUser
 from alipay_proxy.models import DutCustomerAgreementSign
 from utils.helpers import get_optional, service2method
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 def gen_trade_no(**kwargs):
     context = AlipayContext.objects.get(out_trade_no=kwargs['out_trade_no'])
@@ -141,22 +144,36 @@ def alipay_acquire_createandpay(view, **kwargs):
 
 
 def alipay_acquire_query(view, **kwargs):
+    context = {}
     out_trade_no = kwargs.get('out_trade_no')
     try:
         trade_context = json.loads(AlipayContext.objects.get(out_trade_no=out_trade_no).context)
     except AlipayContext.DoesNotExist:
-        raise Http404('Trade does not exist.')
-    context = {}
-    for t in schema.RESP_SCHEMA.get(kwargs.get('service')):
-        if t[4][0] == 0:  # from request
-            context[t[0]] = kwargs.get(t[0])
-        elif t[4][0] == 1:  # from conf
-            context[t[0]] = getattr(conf, t[0])
-        elif t[4][0] == 3:  # from context
-            if len(t[4]) > 1 and t[4][1] in trade_context['response']:
-                context[t[0]] = trade_context['response'].get(t[4][1])
-            elif t[0] in trade_context['context']:
-                context[t[0]] = trade_context['response'].get(t[0])
+        context['is_success'] = 'T'
+        context['result_code'] = 'FAIL'
+        context['detail_error_code'] = 'TRADE_NOT_EXIST'
+        context['detail_error_des'] = u'交易不存在'
+        context['sign_type'] = conf.sign_type
+    else:
+        try:
+            buyer = AlipayUser.objects.get(pk=trade_context['request_']['buyer_id'])
+        except AlipayUser.DoesNotExist:
+            trade_status = 'TRADE_SUCCESS'
+        else:
+            options = json.loads(buyer.other_options or '{}').get(view.service, {})
+            trade_status = options.get('trade_status', 'TRADE_SUCCESS')
+        context['result_code'] = 'SUCCESS'
+        context['trade_status'] = trade_status
+        for t in schema.RESP_SCHEMA.get(kwargs.get('service')):
+            if t[4][0] == 0:  # from request
+                context[t[0]] = kwargs.get(t[0])
+            elif t[4][0] == 1:  # from conf
+                context[t[0]] = getattr(conf, t[0])
+            elif t[4][0] == 3:  # from context
+                if len(t[4]) > 1 and t[4][1] in trade_context['response']:
+                    context[t[0]] = trade_context['response'].get(t[4][1])
+                elif t[0] in trade_context['response']:
+                    context[t[0]] = trade_context['response'].get(t[0])
     context['sign'] = ""  # TODO, client doesn't verify this
 
     context_ = {
@@ -345,21 +362,15 @@ def alipay_trade_query(view, **kwargs):
 
 
 def mobile_securitypay_pay(view, **kwargs):  # mobile app pay
-    """
-    partner="2088801473085644"&seller_id="zhifubao@etcp.cn"&out_trade_no="p1516695671513110859803"
-    &subject="ETCP停车费支付"&body="ETCP停车费支付"&total_fee="0.01"
-    &notify_url="http://newpay.test.etcp.cn/service/paymentnotify/notifyalipay"&service="mobile.securitypay.pay"
-    &payment_type="1"&_input_charset="utf-8"&it_b_pay="30m"&extend_params={"AGENT_ID":"2088821587787865"}
-    &return_url="m.alipay.com"
-    :param kwargs:
-    :return:
-    """
+    view.format = 'text'
     buyer, buyer_created = AlipayUser.objects.get_or_create(user_id=kwargs.get('partner'))
-    result_status = None
     orig = u'&'.join(['{}="{}"'.format(k, v) for k, v in kwargs.items() if k not in ('sign_type', 'sign')])
     option = json.loads(buyer.other_options or '{}').get(kwargs['service'], {})
+    result_status = 'resultStatus={{{}}}'.format(option.get('resultStatus', '9000'))
     success = option.get('success', 'true')
-    result = orig + 'success="{}"'
+    result = 'result={{{}&success="{}"&sign_type="RSA"&sign=""}}'.format(orig, success)
+    memo = 'memo={}'
+    return u';'.join((result_status, result, memo))
 
 
 def get_schema(service):
@@ -378,5 +389,7 @@ def get_schema(service):
 
 
 def trigger_query():
-    time.sleep(3)
-    requests.get(conf.trade_center_host + '/service/trade/2.2.2/queryOrderByAllWithhold')
+    # for i in range(2):
+        time.sleep(3)
+        resp = requests.get('http://{}/service/trade/2.2.2/queryOrderByAllWithhold'.format(conf.trade_center_host))
+        print resp.text

@@ -213,17 +213,17 @@ RESP_SCHEMA = {
         ('body', 'string', (400,), True, (0,), u'商品描述')
     ),
     'alipay.acquire.query': (
-        # ('is_success', 'string', (1,), False, (3,), u'请求是否成功'),
+        ('is_success', 'string', (1,), False, (3,), u'请求是否成功'),
         ('sign_type', 'string', (), True, (1,), u'签名方式'),  # DSA, RSA, MD5
         ('sign', 'string', (32,), True, (2,), u'签名'),
         ('error', 'string', (), True, (3,), u'接口名称'),
-        ('result_code', 'string', (32,), False, (3,), u'响应码'),
+        ('result_code', 'string', (32,), False, (2,), u'响应码'),
         ('trade_no', 'string', (64,), True, (3,), u'支付宝交易号'),
         ('out_trade_no', 'string', (64,), True, (0,), u'商户网站唯一订单号'),
         ('buyer_user_id', 'string', (16,), True, (3,), u'买家支付宝用户号'),
         ('buyer_logon_id', 'string', (100,), True, (3,), u'买家支付宝账号'),
         ('partner', 'string', (100,), True, (3,), u'合作者身份ID'),
-        ('trade_status', 'string', (32,), True, (3,), u'交易状态'),
+        ('trade_status', 'string', (32,), True, (2,), u'交易状态'),
         ('detail_error_code', 'string', (48,), True, (3,), u'详细错误码'),
         ('detail_error_des', 'string', (64,), True, (3,), u'详细错误描述'),
         ('fund_bill_list', 'xml', (), True, (3,), u'本次交易支付单据信息集合'),
