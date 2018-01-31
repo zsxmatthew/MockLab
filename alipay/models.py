@@ -19,7 +19,3 @@ class AlipayContext(models.Model):
     out_trade_no = models.CharField(max_length=64, primary_key=True)
     service = models.CharField(max_length=512)
     context = models.TextField(blank=True, null=True)
-
-
-
-

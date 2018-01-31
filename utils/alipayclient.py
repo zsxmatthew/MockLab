@@ -33,7 +33,6 @@ class DefaultAlipayClient(object):
 
 
 class DefaultAlipayResponse(object):
-
     def __init__(self, response):
         self.response = response
 
@@ -43,7 +42,7 @@ class DefaultAlipayResponse(object):
         except AttributeError, e:
             if hasattr(self.response, item):
                 return getattr(self.response, item)
-            raise e
+            raise
 
     def is_success(self):
         try:

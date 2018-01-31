@@ -20,6 +20,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+
 def gen_trade_no(**kwargs):
     context = AlipayContext.objects.get(out_trade_no=kwargs['out_trade_no'])
     trade_no_prefix = context.trade_time.strftime('%Y%m%d')
@@ -176,11 +177,13 @@ def alipay_acquire_query(view, **kwargs):
                     context[t[0]] = trade_context['response'].get(t[0])
     context['sign'] = ""  # TODO, client doesn't verify this
 
+    # assemble all parts of context
     context_ = {
         'request_': kwargs,
         'schema': get_schema(kwargs['service']),
         'response': context
     }
+
     return context_
 
 
@@ -242,11 +245,14 @@ def alipay_dut_customer_agreement_query(view, **kwargs):
         context['external_sign_no'] = external_sign_no
     if context['is_success'] == 'F':  # error should not be available if query succeeds
         context.update(get_optional(kwargs, 'error'))
+
+    # assemble all parts of context
     context_ = {
         'request_': kwargs,
         'schema': get_schema(kwargs['service']),
         'response': context
     }
+
     return context_
 
 
@@ -390,6 +396,6 @@ def get_schema(service):
 
 def trigger_query():
     # for i in range(2):
-        time.sleep(3)
-        resp = requests.get('http://{}/service/trade/2.2.2/queryOrderByAllWithhold'.format(conf.trade_center_host))
+        time.sleep(3)  # this waiting time might need more adjustments
+        resp = requests.get('http://{}/{}'.format(conf.trade_center_host, conf.query_order_api))
         print resp.text
